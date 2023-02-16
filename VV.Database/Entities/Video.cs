@@ -2,11 +2,6 @@
 
 public class Video : IEntity
 {
-	public Video()
-	{
-		SimilarVideos = new HashSet<SimilarVideo>();
-		Genres = new HashSet<Genre>();
-	}
 	public int Id { get; set; }
 	[Required, MaxLength(100)]
 	public string Title { get; set; }

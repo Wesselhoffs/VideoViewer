@@ -12,8 +12,8 @@ using VV.Database.Contexts;
 namespace VV.Database.Migrations
 {
     [DbContext(typeof(VVContext))]
-    [Migration("20230214155649_maybenow343123123123123123")]
-    partial class maybenow343123123123123123
+    [Migration("20230216131047_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
