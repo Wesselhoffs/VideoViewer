@@ -9,6 +9,7 @@ public class Video : IEntity
 	public string Description { get; set; }
 	[Required, MaxLength(1000)]
 	public string Url { get; set; }
+	public string ThumbnailUrl { get; set; }
 	public DateTime Released { get; set; }
 	public bool Free { get; set; } = true;
 	public int DirectorId { get; set; }

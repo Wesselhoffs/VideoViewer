@@ -1,5 +1,4 @@
-﻿
-namespace VV.Database.Entities;
+﻿namespace VV.Database.Entities;
 
 public class Director : IEntity
 {
