@@ -9,3 +9,8 @@ public class DirectorCreateDTO
 {
 	public string Name { get; set; }
 }
+
+public class DirectorFullDTO : DirectorDTO
+{
+	public virtual List<VideoDTO> Videos { get; set; } = new();
+}

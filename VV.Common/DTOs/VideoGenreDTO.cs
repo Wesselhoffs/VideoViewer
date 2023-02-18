@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace VV.Common.DTOs;
 
-namespace VV.Common.DTOs
+public class VideoGenreDTO
 {
-	internal class VideoGenreDTO
-	{
-	}
+	public int VideoId { get; set; }
+	public int GenreId { get; set; }
 }

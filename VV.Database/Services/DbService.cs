@@ -1,4 +1,6 @@
-﻿namespace VV.Database.Services;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace VV.Database.Services;
 
 public class DbService : IDbService
 {
@@ -89,7 +91,7 @@ public class DbService : IDbService
 		return true;
 	}
 
-	public async Task Include<TEntity>() where TEntity : class, IEntity
+	public async Task Include<TEntity>() where TEntity : class
 	{
 		var propertyNames = _db.Model.FindEntityType(typeof(TEntity))?.GetNavigations().Select(e => e.Name);
 
@@ -97,7 +99,9 @@ public class DbService : IDbService
 
 		foreach (var name in propertyNames)
 			_db.Set<TEntity>().Include(name).Load();
+				
 	}
+
 
 	public async Task<bool> SaveChangesAsync()
 	{

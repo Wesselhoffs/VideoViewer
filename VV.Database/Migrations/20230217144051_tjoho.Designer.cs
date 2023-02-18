@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VV.Database.Contexts;
 
@@ -11,9 +12,11 @@ using VV.Database.Contexts;
 namespace VV.Database.Migrations
 {
     [DbContext(typeof(VVContext))]
-    partial class VVContextModelSnapshot : ModelSnapshot
+    [Migration("20230217144051_tjoho")]
+    partial class tjoho
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

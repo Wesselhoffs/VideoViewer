@@ -1,12 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace VV.Common.DTOs
+namespace VV.Common.DTOs;
+
+public class VideoDTO
 {
-	internal class VideoDTO
-	{
-	}
+	public int Id { get; set; }
+	public string Title { get; set; }
+	public string Description { get; set; }
+	public string Url { get; set; }
+	public string ThumbnailUrl { get; set; }
+	public DateTime Released { get; set; }
+	public bool Free { get; set; } = true;
+	public int DirectorId { get; set; }
+	public virtual DirectorDTO? Director { get; set; }
+	public virtual List<GenreDTO> Genres { get; set; } = new();
+	public virtual List<SimilarVideoDTO> SimilarVideos { get; set; } = new();
+}
+
+public class VideoCreateDTO
+{
+	public string Title { get; set; }
+	public string Description { get; set; }
+	public string Url { get; set; }
+	public string ThumbnailUrl { get; set; }
+	public DateTime Released { get; set; }
+	public bool Free { get; set; } = true;
+	public int? DirectorId { get; set; }
+}
+
+public class VideoEditDTO : VideoCreateDTO
+{
+	public int Id { get; set; }
 }

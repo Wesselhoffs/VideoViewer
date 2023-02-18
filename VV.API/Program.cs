@@ -1,5 +1,4 @@
-using static System.Collections.Specialized.BitVector32;
-using VV.Database.Entities;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +12,7 @@ builder.Services.AddCors(policy =>
 													  .AllowAnyHeader()
 													  .AllowAnyMethod());
 });
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -42,9 +41,27 @@ app.Run();
 
 void ConfigureAutoMapper()
 {
-	var config = new AutoMapper.MapperConfiguration(cfg =>
+	var mapConfig = new AutoMapper.MapperConfiguration(config =>
 	{
+		config.CreateMap<Video, VideoDTO>().ReverseMap();
+		config.CreateMap<VideoEditDTO, Video>();
+		config.CreateMap<VideoCreateDTO, Video>();
+
+		config.CreateMap<VideoGenre, VideoGenreDTO>().ReverseMap();
+
+		config.CreateMap<SimilarVideo, SimilarVideoDTO>().ReverseMap();
+
+		config.CreateMap<Director, DirectorDTO>().ReverseMap();
+		config.CreateMap<Director, DirectorFullDTO>().ReverseMap();
+		config.CreateMap<DirectorCreateDTO, Director>();
+
+		config.CreateMap<Genre, GenreDTO>().ReverseMap();
+		config.CreateMap<Genre, GenreFullDTO>().ReverseMap();
+		config.CreateMap<GenreCreateDTO, Genre>();
+		config.CreateMap<GenreEditDTO, Genre>();
+
 	});
-	var mapper = config.CreateMapper();
+	//mapConfig.AssertConfigurationIsValid();
+	var mapper = mapConfig.CreateMapper();
 	builder.Services.AddSingleton(mapper);
 }

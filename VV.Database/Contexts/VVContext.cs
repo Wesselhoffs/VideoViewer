@@ -22,7 +22,7 @@ public class VVContext : DbContext
 				.HasMany(d => d.SimilarVideos)
 				.WithOne(p => p.Video)
 				.HasForeignKey(d => d.VideoId)
-				.OnDelete(DeleteBehavior.ClientSetNull);
+				.OnDelete(DeleteBehavior.Cascade);
 
 			entity.HasMany(d => d.Genres)
 				  .WithMany(p => p.Videos)

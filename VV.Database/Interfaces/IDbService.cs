@@ -18,7 +18,7 @@
 
 		bool Delete<TReferenceEntity, TDto>(TDto dto) where TReferenceEntity : class, IReferenceEntity where TDto : class;
 
-		Task Include<TEntity>() where TEntity : class, IEntity;
+		Task Include<TEntity>() where TEntity : class;
 
 		string GetURI<TEntity>(TEntity entity) where TEntity : class, IEntity;
 

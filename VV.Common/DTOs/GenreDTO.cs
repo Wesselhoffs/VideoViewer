@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace VV.Common.DTOs;
 
-namespace VV.Common.DTOs
+public class GenreDTO
 {
-	internal class GenreDTO
-	{
-	}
+	public int Id { get; set; }
+	public string Name { get; set; }
+
+}
+public class GenreCreateDTO
+{
+	public string Name { get; set; }
+}
+public class GenreEditDTO : GenreCreateDTO
+{
+	public int Id { get; set; }
+}
+
+public class GenreFullDTO : GenreDTO
+{
+	public virtual List<VideoDTO> Videos { get; set; } = new();  
 }

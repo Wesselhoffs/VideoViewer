@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VV.Database.Contexts;
 
@@ -11,13 +12,15 @@ using VV.Database.Contexts;
 namespace VV.Database.Migrations
 {
     [DbContext(typeof(VVContext))]
-    partial class VVContextModelSnapshot : ModelSnapshot
+    [Migration("20230216183529_test3")]
+    partial class test3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -86,7 +89,7 @@ namespace VV.Database.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("DirectorId")
+                    b.Property<int>("DirectorId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Free")
@@ -97,8 +100,7 @@ namespace VV.Database.Migrations
 
                     b.Property<string>("ThumbnailUrl")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -153,34 +155,27 @@ namespace VV.Database.Migrations
             modelBuilder.Entity("VV.Database.Entities.Video", b =>
                 {
                     b.HasOne("VV.Database.Entities.Director", "Director")
-                        .WithMany("Videos")
-                        .HasForeignKey("DirectorId");
+                        .WithMany()
+                        .HasForeignKey("DirectorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Director");
                 });
 
             modelBuilder.Entity("VV.Database.Entities.VideoGenre", b =>
                 {
-                    b.HasOne("VV.Database.Entities.Genre", "Genre")
+                    b.HasOne("VV.Database.Entities.Genre", null)
                         .WithMany()
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VV.Database.Entities.Video", "Video")
+                    b.HasOne("VV.Database.Entities.Video", null)
                         .WithMany()
                         .HasForeignKey("VideoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Genre");
-
-                    b.Navigation("Video");
-                });
-
-            modelBuilder.Entity("VV.Database.Entities.Director", b =>
-                {
-                    b.Navigation("Videos");
                 });
 
             modelBuilder.Entity("VV.Database.Entities.Video", b =>
