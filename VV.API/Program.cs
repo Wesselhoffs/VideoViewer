@@ -58,7 +58,6 @@ void ConfigureAutoMapper()
 		config.CreateMap<Genre, GenreDTO>().ReverseMap();
 		config.CreateMap<Genre, GenreFullDTO>().ReverseMap();
 		config.CreateMap<GenreCreateDTO, Genre>();
-		config.CreateMap<GenreEditDTO, Genre>();
 
 	});
 	//mapConfig.AssertConfigurationIsValid();

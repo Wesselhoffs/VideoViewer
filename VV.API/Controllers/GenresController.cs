@@ -2,11 +2,11 @@
 
 [Route("api/[controller]")]
 [ApiController]
-public class DirectorsController : ControllerBase
+public class GenresController : ControllerBase
 {
 	private readonly IDbService _db;
 
-	public DirectorsController(IDbService dbService)
+	public GenresController(IDbService dbService)
 	{
 		_db = dbService;
 	}
@@ -17,21 +17,21 @@ public class DirectorsController : ControllerBase
 		{
 			if (getFull)
 			{
-				await _db.Include<Director>();
-				var directorsFull = await _db.GetAsync<Director, DirectorFullDTO>();
-				if (directorsFull is null)
+				await _db.Include<Genre>();
+				await _db.Include<VideoGenre>();
+				var genreFull = await _db.GetAsync<Genre, GenreFullDTO>();
+				if (genreFull is null)
 				{
 					return Results.NotFound();
 				}
-				return Results.Ok(directorsFull);
+				return Results.Ok(genreFull);
 			}
-			var directors = await _db.GetAsync<Director, DirectorDTO>();
-			if (directors is null)
+			var genre = await _db.GetAsync<Genre, GenreDTO>();
+			if (genre is null)
 			{
 				return Results.NotFound();
 			}
-			return Results.Ok(directors);
-
+			return Results.Ok(genre);
 		}
 		catch (Exception ex)
 		{
@@ -46,20 +46,21 @@ public class DirectorsController : ControllerBase
 		{
 			if (getFull)
 			{
-				await _db.Include<Director>();
-				var directorFull = await _db.SingleAsync<Director, DirectorFullDTO>(v => v.Id == id);
-				if (directorFull is null)
+				await _db.Include<Genre>();
+				await _db.Include<VideoGenre>();
+				var genreFull = await _db.SingleAsync<Genre, GenreFullDTO>(v => v.Id == id);
+				if (genreFull is null)
 				{
 					return Results.NotFound("No matching id found.");
 				}
-				return Results.Ok(directorFull);
+				return Results.Ok(genreFull);
 			}
-			var director = await _db.SingleAsync<Director, DirectorDTO>(v => v.Id == id);
-			if (director is null)
+			var genre = await _db.SingleAsync<Genre, GenreDTO>(v => v.Id == id);
+			if (genre is null)
 			{
 				return Results.NotFound("No matching id found.");
 			}
-			return Results.Ok(director);
+			return Results.Ok(genre);
 		}
 		catch (Exception ex)
 		{
@@ -68,7 +69,7 @@ public class DirectorsController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<IResult> Post([FromBody] DirectorCreateDTO dto)
+	public async Task<IResult> Post([FromBody] GenreCreateDTO dto)
 	{
 		try
 		{
@@ -76,13 +77,13 @@ public class DirectorsController : ControllerBase
 			{
 				return Results.BadRequest();
 			}
-			var director = await _db.AddAsync<Director, DirectorCreateDTO>(dto);
+			var genre = await _db.AddAsync<Genre, GenreCreateDTO>(dto);
 			var success = await _db.SaveChangesAsync();
 			if (success is false)
 			{
 				return Results.BadRequest();
 			}
-			return Results.Created(_db.GetURI(director), director);
+			return Results.Created(_db.GetURI(genre), genre);
 		}
 		catch (Exception ex)
 		{
@@ -91,7 +92,7 @@ public class DirectorsController : ControllerBase
 	}
 
 	[HttpPut("{id}")]
-	public async Task<IResult> Put(int id, [FromBody] DirectorDTO dto)
+	public async Task<IResult> Put(int id, [FromBody] GenreDTO dto)
 	{
 		try
 		{
@@ -103,12 +104,12 @@ public class DirectorsController : ControllerBase
 			{
 				return Results.BadRequest($"URL Id: {id} is not equal to Entity Id: {dto.Id}");
 			}
-			var exists = await _db.AnyAsync<Director>(v => v.Id.Equals(id));
+			var exists = await _db.AnyAsync<Genre>(v => v.Id.Equals(id));
 			if (exists is false)
 			{
 				return Results.NotFound("Could not find an Entity with id: " + id);
 			}
-			_db.Update<Director, DirectorDTO>(dto, dto.Id);
+			_db.Update<Genre, GenreDTO>(dto, dto.Id);
 			var success = await _db.SaveChangesAsync();
 			if (success is false)
 			{
@@ -127,7 +128,7 @@ public class DirectorsController : ControllerBase
 	{
 		try
 		{
-			var success = await _db.DeleteAsync<Director>(id);
+			var success = await _db.DeleteAsync<Genre>(id);
 			if (success is false)
 			{
 				return Results.NotFound("Could not find an Entity with id: " + id);

@@ -99,7 +99,7 @@ public class DbService : IDbService
 
 		foreach (var name in propertyNames)
 			_db.Set<TEntity>().Include(name).Load();
-				
+
 	}
 
 

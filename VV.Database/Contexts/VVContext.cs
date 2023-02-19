@@ -13,8 +13,8 @@ public class VVContext : DbContext
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		modelBuilder.Entity<SimilarVideo>().HasKey(ci => new { ci.VideoId, ci.SimilarVideoId });
-		modelBuilder.Entity<VideoGenre>().HasKey(ci => new { ci.VideoId, ci.GenreId });
+		modelBuilder.Entity<SimilarVideo>().HasKey(sv => new { sv.VideoId, sv.SimilarVideoId });
+		modelBuilder.Entity<VideoGenre>().HasKey(vg => new { vg.VideoId, vg.GenreId });
 
 		modelBuilder.Entity<Video>(entity =>
 		{

@@ -10,10 +10,6 @@ public class GenreCreateDTO
 {
 	public string Name { get; set; }
 }
-public class GenreEditDTO : GenreCreateDTO
-{
-	public int Id { get; set; }
-}
 
 public class GenreFullDTO : GenreDTO
 {
