@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VV.API", "VV.API\VV.API.csproj", "{0FB360C6-1C95-447B-AD13-C79C0548DE7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VV.API", "VV.API\VV.API.csproj", "{0FB360C6-1C95-447B-AD13-C79C0548DE7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VV.Admin.UI", "VV.Admin.UI\VV.Admin.UI.csproj", "{693DE13E-DA2B-4E6F-A71F-74530FFE5E4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VV.Admin.UI", "VV.Admin.UI\VV.Admin.UI.csproj", "{693DE13E-DA2B-4E6F-A71F-74530FFE5E4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VV.Common", "VV.Common\VV.Common.csproj", "{A8B60FE7-AA43-4B94-9E0C-7C60E9E80638}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VV.Common", "VV.Common\VV.Common.csproj", "{A8B60FE7-AA43-4B94-9E0C-7C60E9E80638}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VV.Database", "VV.Database\VV.Database.csproj", "{358F199B-7EDD-4E25-8688-7A4DA8C994B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VV.Database", "VV.Database\VV.Database.csproj", "{358F199B-7EDD-4E25-8688-7A4DA8C994B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VV.User.UI", "VV.User.UI\VV.User.UI.csproj", "{BDD64114-5D51-4656-86D3-403457E6CBE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VV.User.UI", "VV.User.UI\VV.User.UI.csproj", "{BDD64114-5D51-4656-86D3-403457E6CBE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

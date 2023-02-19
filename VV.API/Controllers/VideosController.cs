@@ -11,7 +11,7 @@ public class VideosController : ControllerBase
 		_db = dbService;
 	}
 	[HttpGet]
-	public async Task<IResult> Get(bool freeOnly)
+	public async Task<IResult> Get(bool freeOnly = false)
 	{
 		try
 		{

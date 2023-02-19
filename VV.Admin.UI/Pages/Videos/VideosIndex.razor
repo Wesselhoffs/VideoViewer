@@ -1,0 +1,40 @@
+﻿<table class="table table-hover m-3">
+	<thead>
+		<tr>
+			<th scope="col">Thumbnail</th>
+			<th scope="col">Id</th>
+			<th scope="col">Title</th>
+			<th scope="col">Description</th>
+			<th scope="col">Url</th>
+			<th scope="col">Released</th>
+			<th scope="col">DirectorId</th>
+			<th scope="col">Free</th>
+		</tr>
+	</thead>
+	<tbody class="table-group-divider">
+		@foreach (var vid in Model)
+		{
+			<tr>
+				<td width="100"><img src="@vid.ThumbnailUrl" width="100" /></td>
+				<td>@vid.Id</td>
+				<td>@vid.Title</td>
+				<td>@vid.Description.Truncate(100)</td>
+				<td>@vid.Url</td>
+				<td>@vid.Released.ToString("dd/mm/yyyy")</td>
+				<td>@vid.DirectorId</td>
+				<td>@(vid.Free ? "Free" : "")</td>
+				<td style="vertical-align:middle">
+					<div class="d-flex mt-1 me-1 justify-content-end">
+						<button class="btn btn-outline-primary p-2 me-2" @onclick="@(() => OnClick.InvokeAsync(new ClickModel(PageType.Edit, vid.Id)))">Edit</button>
+						<button class="btn btn-outline-danger p-2" @onclick="@(() => OnClick.InvokeAsync(new ClickModel(PageType.Delete, vid.Id)))">Delete</button>
+					</div>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+@code {
+	[Parameter] public List<VideoDTO> Model { get; set; } = new();
+	[Parameter] public EventCallback<ClickModel> OnClick { get; set; }
+
+}

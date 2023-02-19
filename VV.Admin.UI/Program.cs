@@ -1,13 +1,10 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using VV.Admin.UI.Data;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddHttpClient<VVHttpClient>(client => client.BaseAddress = new Uri("https://localhost:6001/api/"));
 
 var app = builder.Build();
 
