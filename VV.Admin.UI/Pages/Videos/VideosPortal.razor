@@ -10,6 +10,16 @@
 	</div>
 }
 
+@if (Navigation == PageType.Create)
+{
+	<VideosEdit Page="@Navigation" OnChange="OnChange"></VideosEdit>
+}
+
+@if (Navigation == PageType.Edit || Navigation == PageType.Delete)
+{
+	<VideosEdit Page="@Navigation" OnChange="OnChange" Model="Video"></VideosEdit>
+}
+
 <div class="d-flex m-3">
 	<button type="button" class="btn btn-outline-info p-3 me-3" @onclick="()=>ChangePageType(PageType.Index)">Index</button>
 	<button type="button" class="btn btn-outline-info p-3" @onclick="()=>ChangePageType(PageType.Create)">Create</button>
@@ -21,6 +31,7 @@
 	public string Alert { get; set; } = "";
 	public string Navigation { get; set; } = PageType.Index;
 	public List<VideoDTO> Model { get; set; } = new();
+	public VideoDTO Video { get; set; } = new();
 
 	public void ChangePageType(string pageType)
 	{
@@ -35,14 +46,31 @@
 	async Task OnClick(ClickModel model)
 	{
 		if (model.pageType.Equals(PageType.Edit) || model.pageType.Equals(PageType.Delete))
-
+		{
+			Video = await AdminService.SingleAsync<VideoDTO>($"Videos/{model.id}") ?? new();
+		}
 		ChangePageType(model.pageType);
 	}
+
+	async Task OnChange(string alert)
+	{
+		try
+		{
+			Alert = alert;
+			Model = await AdminService.GetAsync<VideoDTO>("Videos");
+			ChangePageType(PageType.Index);
+		}
+		catch
+		{
+			Alert = "HUGE ERROR";
+		}
+	}
+
 
 
 	protected override async Task OnInitializedAsync()
 	{
-		Alert = "test";
+		Alert = "";
 		Model = await AdminService.GetAsync<VideoDTO>("Videos");
 	}
 }
