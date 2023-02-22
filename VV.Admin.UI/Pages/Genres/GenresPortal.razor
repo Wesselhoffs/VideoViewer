@@ -1,5 +1,74 @@
-﻿<h3>GenresPortal</h3>
+﻿@inject IAdminService AdminService
+
+@if (!String.IsNullOrWhiteSpace(Alert))
+{
+	<div class="d-flex m-3">
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<strong>@Alert</strong>
+			<button type="button" @onclick="CloseAlert" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	</div>
+}
+
+@if (Navigation == PageType.Create)
+{
+	<GenresEdit Page="@Navigation" OnChange="OnChange"></GenresEdit>
+}
+
+@if (Navigation == PageType.Edit || Navigation == PageType.Delete)
+{
+	<GenresEdit Page="@Navigation" OnChange="OnChange" Model="Genre"></GenresEdit>
+}
+
+<div class="d-flex m-3">
+	<button type="button" class="btn btn-outline-info p-3 me-3" @onclick="()=>ChangePageType(PageType.Index)">Index</button>
+	<button type="button" class="btn btn-outline-info p-3" @onclick="()=>ChangePageType(PageType.Create)">Create</button>
+</div>
+
+<GenresIndex OnClick="OnClick" Model="Model"></GenresIndex>
 
 @code {
+	public string Alert { get; set; } = "";
+	public string Navigation { get; set; } = PageType.Index;
+	public List<GenreDTO> Model { get; set; } = new();
+	public GenreDTO Genre { get; set; } = new();
 
+	public void ChangePageType(string pageType)
+	{
+		Navigation = pageType;
+	}
+
+	public void CloseAlert()
+	{
+		Alert = "";
+	}
+
+	async Task OnClick(ClickModel model)
+	{
+		if (model.pageType.Equals(PageType.Edit) || model.pageType.Equals(PageType.Delete))
+		{
+			Genre = await AdminService.SingleAsync<GenreDTO>($"Genres/{model.id}") ?? new();
+		}
+		ChangePageType(model.pageType);
+	}
+
+	async Task OnChange(string alert)
+	{
+		try
+		{
+			Alert = alert;
+			Model = await AdminService.GetAsync<GenreDTO>("Genres");
+			ChangePageType(PageType.Index);
+		}
+		catch
+		{
+			Alert = "HUGE ERROR";
+		}
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		Alert = "";
+		Model = await AdminService.GetAsync<GenreDTO>("Genres");
+	}
 }
