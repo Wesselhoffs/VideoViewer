@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using VV.Common.DTOs;
 
 namespace VV.Database.Services;
 
@@ -13,7 +14,12 @@ public class DbService : IDbService
 		_mapper = mapper;
 	}
 
-	public async Task<List<TDto>> GetAsync<TEntity, TDto>() where TEntity : class, IEntity where TDto : class
+	public void ClearTracker()
+	{
+		_db.ChangeTracker.Clear();
+	}
+
+	public async Task<List<TDto>> GetAsync<TEntity, TDto>() where TEntity : class  where TDto : class
 	{
 		var entities = await _db.Set<TEntity>().ToListAsync();
 		return _mapper.Map<List<TDto>>(entities);

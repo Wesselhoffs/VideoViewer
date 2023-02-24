@@ -1,5 +1,74 @@
-﻿<h3>VideoGenresPortal</h3>
+﻿@inject IAdminService AdminService
+
+@if (!String.IsNullOrWhiteSpace(Alert))
+{
+	<div class="d-flex m-3">
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<strong>@Alert</strong>
+			<button type="button" @onclick="CloseAlert" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	</div>
+}
+
+@if (Navigation == PageType.Create)
+{
+	<VideoGenresEdit Page="@Navigation" OnChange="OnChange"></VideoGenresEdit>
+}
+
+@if (Navigation == PageType.Edit || Navigation == PageType.Delete)
+{
+	<VideoGenresEdit Page="@Navigation" OnChange="OnChange" Model="VidGenre"></VideoGenresEdit>
+}
+
+<div class="d-flex m-3">
+	<button type="button" class="btn btn-outline-info p-3 me-3" @onclick="()=>ChangePageType(PageType.Index)">Index</button>
+	<button type="button" class="btn btn-outline-info p-3" @onclick="()=>ChangePageType(PageType.Create)">Create</button>
+</div>
+
+<VideoGenresIndex OnClick="OnClick" Model="Model"></VideoGenresIndex>
 
 @code {
+	public string Alert { get; set; } = "";
+	public string Navigation { get; set; } = PageType.Index;
+	public List<VideoGenreDTO> Model { get; set; } = new();
+	public VideoGenreDTO VidGenre { get; set; } = new();
 
+	public void ChangePageType(string pageType)
+	{
+		Navigation = pageType;
+	}
+
+	public void CloseAlert()
+	{
+		Alert = "";
+	}
+
+	async Task OnClick(RefClickModel<VideoGenreDTO> model)
+	{
+		if (model.pageType.Equals(PageType.Edit) || model.pageType.Equals(PageType.Delete))
+		{
+			VidGenre = model.dto ?? new();
+		}
+		ChangePageType(model.pageType);
+	}
+
+	async Task OnChange(string alert)
+	{
+		try
+		{
+			Alert = alert;
+			ChangePageType(PageType.Index);
+			Model = await AdminService.GetAsync<VideoGenreDTO>("VideoGenres");
+					}
+		catch
+		{
+			Alert = "HUGE ERROR";
+		}
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		Alert = "";
+		Model = await AdminService.GetAsync<VideoGenreDTO>("VideoGenres");
+	}
 }

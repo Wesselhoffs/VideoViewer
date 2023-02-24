@@ -2,7 +2,7 @@
 {
 	public interface IDbService
 	{
-		Task<List<TDto>> GetAsync<TEntity, TDto>() where TEntity : class, IEntity where TDto : class;
+		Task<List<TDto>> GetAsync<TEntity, TDto>() where TEntity : class where TDto : class;
 
 		Task<List<TDto>> GetAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> expression) where TEntity : class, IEntity where TDto : class;
 
@@ -23,5 +23,6 @@
 		string GetURI<TEntity>(TEntity entity) where TEntity : class, IEntity;
 
 		Task<bool> SaveChangesAsync();
+		void ClearTracker();
 	}
 }

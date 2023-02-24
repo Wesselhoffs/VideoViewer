@@ -26,10 +26,10 @@ public class VideoCreateDTO
 	public DateTime Released { get; set; }
 	public bool Free { get; set; } = true;
 	public int? DirectorId { get; set; }
-	public List<int> GenreId { get; set; } = new();
 }
 
 public class VideoEditDTO : VideoCreateDTO
 {
 	public int Id { get; set; }
+	public virtual List<GenreDTO> Genres { get; set; } = new();
 }

@@ -20,4 +20,8 @@
     <Folder Include="Extensions\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\VV.Common\VV.Common.csproj" />
+  </ItemGroup>
+
 </Project>

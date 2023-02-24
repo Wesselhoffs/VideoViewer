@@ -1,4 +1,6 @@
-﻿namespace VV.API.Controllers;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace VV.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -84,6 +86,10 @@ public class VideosController : ControllerBase
 			{
 				return Results.NotFound("Could not find an Entity with id: " + id);
 			}
+			var allGenres = await _db.GetAsync<VideoGenre, VideoGenreDTO>();
+			_db.ClearTracker();
+			allGenres.Where(vg => vg.VideoId.Equals(dto.Id)).ToList().ForEach(vg => _db.Delete<VideoGenre, VideoGenreDTO>(vg));
+			await _db.SaveChangesAsync();
 			_db.Update<Video, VideoEditDTO>(dto, dto.Id);
 			var success = await _db.SaveChangesAsync();
 			if (success is false)

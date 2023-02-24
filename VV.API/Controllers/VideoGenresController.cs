@@ -11,6 +11,24 @@ public class VideoGenresController : ControllerBase
 		_db = dbService;
 	}
 
+	[HttpGet]
+	public async Task<IResult> Get()
+	{
+		try
+		{			
+			var videoGenres = await _db.GetAsync<VideoGenre, VideoGenreDTO>();
+			if (videoGenres is null)
+			{
+				return Results.NotFound();
+			}
+			return Results.Ok(videoGenres);
+		}
+		catch (Exception ex)
+		{
+			return Results.BadRequest(ex.Message);
+		}
+	}
+
 	[HttpPost]
 	public async Task<IResult> Post([FromBody] VideoGenreDTO dto)
 	{

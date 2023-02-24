@@ -2,7 +2,8 @@
 {
 	public interface IAdminService
 	{
-		Task CreateAsync<TDto>(string uri, TDto dto);
+		Task<HttpResponseMessage> CreateAsync<TDto>(string uri, TDto dto);
+		Task CreateRefAsync<TRefDto>(string uri, TRefDto dto);
 		Task DeleteAsync<TDto>(string uri);
 		Task DeleteRefAsync<TRefDto>(string uri, TRefDto dto);
 		Task EditAsync<TDto>(string uri, TDto dto);

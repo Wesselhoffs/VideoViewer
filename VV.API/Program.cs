@@ -44,8 +44,14 @@ void ConfigureAutoMapper()
 	var mapConfig = new AutoMapper.MapperConfiguration(config =>
 	{
 		config.CreateMap<Video, VideoDTO>().ReverseMap();
-		config.CreateMap<VideoEditDTO, Video>();
+		config.CreateMap<VideoEditDTO, Video>();    //.ForMember(vid => vid.Director, src => src.Ignore())
+													//											.ForMember(vid => vid.Genres, src => src.Ignore())
+													//											.ForMember(vid => vid.SimilarVideos, src => src.Ignore()); 
 		config.CreateMap<VideoCreateDTO, Video>();
+		//   .ForMember(vid => vid.Id, src => src.Ignore())
+		//.ForMember(vid => vid.Director, src => src.Ignore())
+		//.ForMember(vid => vid.Genres, src => src.Ignore())
+		//.ForMember(vid => vid.SimilarVideos, src => src.Ignore());
 
 		config.CreateMap<VideoGenre, VideoGenreDTO>().ReverseMap();
 
@@ -53,11 +59,11 @@ void ConfigureAutoMapper()
 
 		config.CreateMap<Director, DirectorDTO>().ReverseMap();
 		config.CreateMap<Director, DirectorFullDTO>().ReverseMap();
-		config.CreateMap<DirectorCreateDTO, Director>();
+		config.CreateMap<DirectorCreateDTO, Director>().ForMember(dir => dir.Id, src => src.Ignore()).ForMember(dir => dir.Videos, src => src.Ignore());
 
 		config.CreateMap<Genre, GenreDTO>().ReverseMap();
 		config.CreateMap<Genre, GenreFullDTO>().ReverseMap();
-		config.CreateMap<GenreCreateDTO, Genre>();
+		config.CreateMap<GenreCreateDTO, Genre>().ForMember(g => g.Id, src => src.Ignore()).ForMember(g => g.Videos, src => src.Ignore());
 
 	});
 	//mapConfig.AssertConfigurationIsValid();

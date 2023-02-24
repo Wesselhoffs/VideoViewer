@@ -40,12 +40,14 @@ public class AdminService : IAdminService
 		}
 	}
 
-	public async Task CreateAsync<TDto>(string uri, TDto dto)
+	public async Task<HttpResponseMessage> CreateAsync<TDto>(string uri, TDto dto)
 	{
 		try
 		{
-			using var response = await Http.Client.PostAsJsonAsync(uri, dto);
+			var response = await Http.Client.PostAsJsonAsync(uri, dto);
 			response.EnsureSuccessStatusCode();
+			var copy = response;
+			return copy;
 		}
 		catch (Exception)
 		{
@@ -82,6 +84,21 @@ public class AdminService : IAdminService
 		try
 		{
 			var reqMessage = new HttpRequestMessage(HttpMethod.Delete, uri);
+			reqMessage.Content = JsonContent.Create(dto);
+			using var response = await Http.Client.SendAsync(reqMessage);
+			response.EnsureSuccessStatusCode();
+			reqMessage.Dispose();
+		}
+		catch (Exception)
+		{
+			throw;
+		}
+	}
+	public async Task CreateRefAsync<TRefDto>(string uri, TRefDto dto)
+	{
+		try
+		{
+			var reqMessage = new HttpRequestMessage(HttpMethod.Post, uri);
 			reqMessage.Content = JsonContent.Create(dto);
 			using var response = await Http.Client.SendAsync(reqMessage);
 			response.EnsureSuccessStatusCode();
