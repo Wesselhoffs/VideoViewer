@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using VV.Common.DTOs;
 
 namespace VV.API.Controllers;
 
@@ -16,7 +15,7 @@ public class SimilarVideosController : ControllerBase
 	public async Task<IResult> Get()
 	{
 		try
-		{			
+		{
 			var simVids = await _db.GetAsync<SimilarVideo, SimilarVideoDTO>();
 			if (simVids is null)
 			{

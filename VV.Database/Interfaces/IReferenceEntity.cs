@@ -1,6 +1,6 @@
 ﻿namespace VV.Database.Interfaces
 {
-    public interface IReferenceEntity
-    {
-    }
+	public interface IReferenceEntity
+	{
+	}
 }

@@ -13,5 +13,5 @@ public class GenreCreateDTO
 
 public class GenreFullDTO : GenreDTO
 {
-	public virtual List<VideoDTO> Videos { get; set; } = new();  
+	public virtual List<VideoDTO> Videos { get; set; } = new();
 }

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace VV.Common.DTOs;
+﻿namespace VV.Common.DTOs;
 
 public class VideoDTO
 {

@@ -15,7 +15,7 @@ public class VideoGenresController : ControllerBase
 	public async Task<IResult> Get()
 	{
 		try
-		{			
+		{
 			var videoGenres = await _db.GetAsync<VideoGenre, VideoGenreDTO>();
 			if (videoGenres is null)
 			{
@@ -53,7 +53,7 @@ public class VideoGenresController : ControllerBase
 	}
 
 	[HttpDelete]
-	public async Task<IResult> Delete([FromBody]VideoGenreDTO dto)
+	public async Task<IResult> Delete([FromBody] VideoGenreDTO dto)
 	{
 		try
 		{

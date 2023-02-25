@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using VV.Common.DTOs;
-
-namespace VV.Database.Services;
+﻿namespace VV.Database.Services;
 
 public class DbService : IDbService
 {
@@ -19,7 +16,7 @@ public class DbService : IDbService
 		_db.ChangeTracker.Clear();
 	}
 
-	public async Task<List<TDto>> GetAsync<TEntity, TDto>() where TEntity : class  where TDto : class
+	public async Task<List<TDto>> GetAsync<TEntity, TDto>() where TEntity : class where TDto : class
 	{
 		var entities = await _db.Set<TEntity>().ToListAsync();
 		return _mapper.Map<List<TDto>>(entities);
@@ -98,7 +95,7 @@ public class DbService : IDbService
 	}
 
 	public async Task Include<TEntity>() where TEntity : class
-	
+
 	{
 		var propertyNames = _db.Model.FindEntityType(typeof(TEntity))?.GetNavigations().Select(e => e.Name);
 

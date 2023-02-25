@@ -1,7 +1,4 @@
-﻿
-using System.Text.Json.Serialization;
-
-namespace VV.Database.Entities;
+﻿namespace VV.Database.Entities;
 
 public class SimilarVideo : IReferenceEntity
 {
