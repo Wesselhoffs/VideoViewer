@@ -59,7 +59,8 @@
 			Alert = alert;
 			ChangePageType(PageType.Index);
 			Model = await AdminService.GetAsync<VideoGenreDTO>("VideoGenres");
-					}
+
+		}
 		catch
 		{
 			Alert = "HUGE ERROR";

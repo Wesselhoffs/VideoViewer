@@ -1,5 +1,70 @@
-﻿<h3>SimilarVideosPortal</h3>
+﻿@inject IAdminService AdminService
+
+@if (!String.IsNullOrWhiteSpace(Alert))
+{
+	<div class="d-flex m-3">
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<strong>@Alert</strong>
+			<button type="button" @onclick="CloseAlert" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	</div>
+}
+
+@if (Navigation == PageType.Edit || Navigation == PageType.Delete)
+{
+	<SimilarEdit Page="@Navigation" CurrentVideo="currentVid" OnChange="OnChange" SimVideos="SimVideos"></SimilarEdit>
+}
+
+<div class="d-flex m-3">
+	<button type="button" class="btn btn-outline-info p-3 me-3" @onclick="()=>ChangePageType(PageType.Index)">Index</button>
+</div>
+
+<SimilarIndex OnClick="OnClick" Model="AllVideos"></SimilarIndex>
 
 @code {
+	public string Alert { get; set; } = "";
+	public string Navigation { get; set; } = PageType.Index;
+	public List<VideoDTO> AllVideos { get; set; } = new();
+	public List<VideoDTO> SimVideos { get; set; } = new();
+	public VideoDTO currentVid { get; set; } = new();
 
+	public void ChangePageType(string pageType)
+	{
+		Navigation = pageType;
+	}
+
+	public void CloseAlert()
+	{
+		Alert = "";
+	}
+
+	async Task OnClick(ClickModel model)
+	{
+		if (model.pageType.Equals(PageType.Edit) || model.pageType.Equals(PageType.Delete))
+		{
+			currentVid = await AdminService.SingleAsync<VideoDTO>($"Videos/{model.id}") ?? new();			
+			SimVideos = await AdminService.GetAsync<VideoDTO>($"SimilarVideos/{model.id}") ?? new();
+		}
+		ChangePageType(model.pageType);
+	}
+
+	async Task OnChange(string alert)
+	{
+		try
+		{
+			Alert = alert;
+			AllVideos = await AdminService.GetAsync<VideoDTO>("Videos");
+			ChangePageType(PageType.Index);
+		}
+		catch
+		{
+			Alert = "HUGE ERROR";
+		}
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		Alert = "";
+		AllVideos = await AdminService.GetAsync<VideoDTO>("Videos");
+	}
 }

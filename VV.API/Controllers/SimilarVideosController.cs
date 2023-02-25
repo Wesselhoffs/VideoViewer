@@ -1,4 +1,5 @@
-﻿using VV.Common.DTOs;
+﻿using System.Data;
+using VV.Common.DTOs;
 
 namespace VV.API.Controllers;
 
@@ -10,6 +11,23 @@ public class SimilarVideosController : ControllerBase
 	public SimilarVideosController(IDbService dbService)
 	{
 		_db = dbService;
+	}
+	[HttpGet]
+	public async Task<IResult> Get()
+	{
+		try
+		{			
+			var simVids = await _db.GetAsync<SimilarVideo, SimilarVideoDTO>();
+			if (simVids is null)
+			{
+				return Results.NotFound();
+			}
+			return Results.Ok(simVids);
+		}
+		catch (Exception ex)
+		{
+			return Results.BadRequest(ex.Message);
+		}
 	}
 	[HttpGet("{videoId}")]
 	public async Task<IResult> Get(int videoId, bool freeOnly = false)
@@ -32,12 +50,9 @@ public class SimilarVideosController : ControllerBase
 				resultVideos.AddRange(videos.Where(v => v.Id.Equals(simVideo.VideoId)));
 				resultVideos.AddRange(videos.Where(v => v.Id.Equals(simVideo.SimilarVideoId)));
 			}
-			if (!resultVideos.Any())
-			{
-				return Results.NotFound("No similar videos found.");
-			}
+
 			resultVideos.RemoveAll(v => v.Id.Equals(videoId));
-			return Results.Ok(resultVideos.ToHashSet());
+			return Results.Ok(resultVideos.ToHashSet().ToList());
 		}
 		catch (Exception ex)
 		{

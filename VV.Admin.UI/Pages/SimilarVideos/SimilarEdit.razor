@@ -1,0 +1,113 @@
+﻿@inject IAdminService AdminService
+<div class="d-xxl-flex justify-content-center">
+	<EditForm Model="@CurrentVideo" OnValidSubmit="@OnFormSubmit" class="border border-dark rounded p-3 w-25 shadow-lg">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+		<h4>@Page Similar Videos</h4>
+		<div class="mb-3">
+			<InputText id="title" class="form-control" @bind-Value="CurrentVideo.Title" disabled placeholder="Title"></InputText>
+			<ValidationMessage For="@(() => CurrentVideo.Title)" />
+			@if (!Page.Equals(PageType.Delete))
+			{
+				<div class="m-3">
+					<p>Select videos similar to this <i class="fa-solid fa-arrow-turn-up"></i></p>
+					<p>In the list down here <i class="fa-solid fa-arrow-turn-down"></i></p>
+				</div>
+
+				<div class="mb-3">
+					<InputSelect id="similarvideos" class="form-control" @bind-Value="SimVidIds">
+						<option value="0" disabled>Select similar videos (hold ctrl to select many)</option>
+						@foreach (var vid in AllVideos)
+						{
+							<option value="@vid.Id">@vid.Title</option>
+						}
+					</InputSelect>
+					<ValidationMessage For="@(() => AllVideos)" />
+				</div>
+
+			}
+		</div>
+
+		<button type="submit" class="btn px-3 btn-outline-@(Page.Equals(PageType.Delete) ? "danger" : "primary")">@Page</button>
+	</EditForm>
+</div>
+
+@code {
+	[Parameter] public VideoDTO CurrentVideo { get; set; } = new();
+	[Parameter] public List<VideoDTO> SimVideos { get; set; } = new();
+	[Parameter] public string Page { get; set; } = "";
+	[Parameter] public EventCallback<string> OnChange { get; set; }
+	public List<VideoDTO> AllVideos { get; set; } = new();
+	public List<SimilarVideoDTO> AllSimilars { get; set; } = new();
+	public int[] SimVidIds { get; set; } = new int[] { };
+
+	private async Task OnFormSubmit()
+	{
+		try
+		{
+			List<SimilarVideoDTO> listSimilarVideosToAdd = new();
+			List<SimilarVideoDTO> listSimilarVideosToRemove = new();
+			foreach (var id in SimVidIds)
+			{
+				if (!SimVideos.Select(s => s.Id).ToList().Contains(id))
+				{
+					listSimilarVideosToAdd.Add(new SimilarVideoDTO
+						{
+							VideoId = CurrentVideo.Id,
+							SimilarVideoId = id
+						});
+				}
+			}
+			foreach (var simVid in SimVideos)
+			{
+				if (!SimVidIds.Contains(simVid.Id))
+				{
+					var tempSimVid = new SimilarVideoDTO
+						{
+							VideoId = CurrentVideo.Id,
+							SimilarVideoId = simVid.Id
+						};
+					var flippedSimVid = new SimilarVideoDTO
+						{
+							VideoId = simVid.Id,
+							SimilarVideoId = CurrentVideo.Id
+						};
+					if (AllSimilars.Where(s => s.VideoId.Equals(flippedSimVid.VideoId) 
+										   && s.SimilarVideoId.Equals(flippedSimVid.SimilarVideoId)).Any())
+					{
+						listSimilarVideosToRemove.Add(flippedSimVid);
+					}
+					else listSimilarVideosToRemove.Add(tempSimVid);
+
+				}
+			}
+			if (Page.Equals(PageType.Edit))
+			{
+				foreach (var dto in listSimilarVideosToRemove)
+				{
+					await AdminService.DeleteRefAsync<SimilarVideoDTO>("SimilarVideos", dto);
+				}
+
+				foreach (var dto in listSimilarVideosToAdd)
+				{
+					await AdminService.CreateRefAsync<SimilarVideoDTO>("SimilarVideos", dto);
+				}
+				await OnChange.InvokeAsync("");
+			}
+			else if (Page.Equals(PageType.Delete))
+
+				await OnChange.InvokeAsync("");
+		}
+		catch
+		{
+			await OnChange.InvokeAsync("Something went wrong.");
+		}
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		AllVideos = await AdminService.GetAsync<VideoDTO>("Videos");
+		SimVidIds = SimVideos.Select(s => s.Id).ToArray();
+		AllSimilars = await AdminService.GetAsync<SimilarVideoDTO>("SimilarVideos");
+	}
+}
