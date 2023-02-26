@@ -1,0 +1,39 @@
+﻿@page "/Video/{Id:int}"
+@inject IUserService uService
+
+<div class="m-5">
+	<a href="/Start" type="button" class="btn btn-outline-secondary">Back</a>
+</div>
+<div class="d-flex justify-content-center">
+	<div class="d-flex flex-column ">
+		<div>
+			<img src=@vid.ThumbnailUrl />
+		</div>
+		<div> Info </div>
+		<div class="d-flex m-2 flex-wrap">
+			@foreach (var vid in simVids)
+			{
+				<SimilarCard Video=@vid VidClick="VideoClicked" />
+			}
+		</div>
+	</div>
+</div>
+
+@code {
+	[Parameter] public int Id { get; set; }
+	public VideoDTO vid { get; set; } = new();
+	public List<VideoDTO> simVids { get; set; } = new();
+
+	public async Task VideoClicked(int id)
+	{
+		vid = await uService.SingleAsync<VideoDTO>($"Videos/{Id}");
+		simVids = await uService.GetAsync<VideoDTO>($"SimilarVideos/{Id}");
+		StateHasChanged();
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		vid = await uService.SingleAsync<VideoDTO>($"Videos/{Id}");
+		simVids = await uService.GetAsync<VideoDTO>($"SimilarVideos/{Id}");
+	}
+}

@@ -1,0 +1,26 @@
+﻿@page "/Start"
+@inject IUserService uService;
+
+@foreach (var gen in AllGenres)
+{
+	if (gen.Videos.Any())
+	{
+		<h1 class="text-light">@gen.Name</h1>
+		<div class="d-flex m-2 flex-wrap">
+			@foreach (var vid in gen.Videos)
+			{
+				<VideoCard Video=@vid />
+			}
+		</div>
+	}
+}
+
+@code {
+
+	public List<GenreFullDTO> AllGenres { get; set; } = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		AllGenres = await uService.GetAsync<GenreFullDTO>("Genres?getFull=true");
+	}
+}

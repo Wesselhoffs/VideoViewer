@@ -1,0 +1,13 @@
+﻿<a href="/Video/@Video.Id" class="link-light text-decoration-none" onclick=@(()=>VidClick.InvokeAsync(Video.Id))>
+	<div class="card mx-2" style="width: 300px">
+		<img class="card-img-top" src=@Video.ThumbnailUrl alt="Card image cap">
+		<div class="card-body bg-dark">
+			<h5 class="card-title">@Video.Title</h5>
+			<p class="card-text">@Video.Description.Truncate(40)</p>
+		</div>
+	</div>
+</a>
+@code {
+	[Parameter] public VideoDTO Video { get; set; }
+	[Parameter] public EventCallback<int> VidClick { get; set; }
+}
